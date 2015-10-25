@@ -28,6 +28,12 @@ class AbstractPage
 		sleep(inspection_time=4)
 		return LogInPage.new(@@driver)
 	end
+	
+	def navigate_to_registration
+		@@driver.find_element(:id, "registration_path").click
+		sleep(inspection_time=3)
+		return RegistrationPage.new(@@driver)
+	end
 
 	def quit
 		@@driver.quit

@@ -18,8 +18,9 @@ class RegistrationPage < AbstractPage
 		@@driver.find_element(:id, "password_confirmation").send_keys confirm
 		return RegistrationPage.new(@@driver)
 	end 
+	
 	def input_username(username = Faker::Lorem.word)
-		@@driver.find_element(:id, "password_confirmation").send_keys username
+		@@driver.find_element(:id, "username").send_keys username
 		return RegistrationPage.new(@@driver)
 	end
 
@@ -37,8 +38,8 @@ class RegistrationPage < AbstractPage
 	end
 
 
-	def get_invalid_sign_up_alert
-		@@driver.find_element(:xpath, '/html/body/div[2]/div/div[1]/form/div[1]/ul/li[1]').text
+	def get_invalid_registration_alert
+		@@driver.find_element(:xpath, '/html/body/div/form/div[1]/ul/li[1]').text
 	end
 
 end

@@ -1,1 +1,3 @@
 
+class NewMoviePage < AbstracPage
+end

@@ -17,12 +17,13 @@ feature "Signing in to Movielauch" do
     success_confirmation = app 
       .navigate_to_home_page
       .navigate_to_registration
+      .input_email
       .input_password
       .input_pw_confirmation
       .input_username
       .submit
     notice = success_confirmation.get_success_confirmation
-    expect(notice).to eq('Signed in successfully.')
+    expect(notice).to eq('Welcome! You have signed up successfully.')
   end
 
   it 'should let user sign out after registering' do
@@ -32,83 +33,73 @@ feature "Signing in to Movielauch" do
     expect(success_logout).to eq('Signed out successfully.')
   end
 
-    it "should not let user sign up without inputing an email" do 
-      signup_alert = app
-        .navigate_to_registration
-        .input_password
-        .input_pw_confirmation
-        .input_username
-        .submit_invalid_registration_form
+  it "should not let user sign up without inputing an email" do 
+    signup_alert = app
+      .navigate_to_registration
+      .input_password
+      .input_pw_confirmation
+      .input_username
+      .submit_invalid_registration_form
 
-      alert = signup_alert.get_invalid_registration_alert
-      expect(alert).to eq('Email can\'t be blank')
-    end
+    alert = signup_alert.get_invalid_registration_alert
+    expect(alert).to eq('Email can\'t be blank')
+  end
 
-    it "should not let user sign up if email is taken" do 
+  it "should not let user sign up if email is taken" do 
 
-      signup_alert = app
-        .navigate_to_registration
-        .input_email('murat@breakthrough.com')
-        .input_password
-        .input_pw_confirmation
-        .input_username
-        .submit_invalid_registration_form
+    signup_alert = app
+      .navigate_to_home_page
+      .navigate_to_registration
+      .input_email('murat@breakthrough.com')
+      .input_password
+      .input_pw_confirmation
+      .input_username
+      .submit_invalid_registration_form
 
-      alert = signup_alert.get_invalid_registration_alert
-      expect(alert).to eq('Email has already been taken')
-    end
+    alert = signup_alert.get_invalid_registration_alert
+    expect(alert).to eq('Email has already been taken')
+  end
 
-    it "should not let user sign up with valid credential without inputting a password" do
-      signup_alert = app
-        .navigate_to_registration
-        .input_email
-        .input_username
-        .submit_invalid_registration_form
+  it "should not let user sign up with valid credential without inputting a password" do
+    signup_alert = app
+      .navigate_to_home_page
+      .navigate_to_registration
+      .input_email
+      .input_username
+      .submit_invalid_registration_form
 
-      alert = signup_alert.get_invalid_registration_alert
-      expect(alert).to eq('Password can\'t be blank')
-    end
+    alert = signup_alert.get_invalid_registration_alert
+    expect(alert).to eq('Password can\'t be blank')
+  end
 
-    it "should not let user sign up without inputing a password confirmation" do  
+  it "should not let user sign up without inputing a password confirmation" do  
 
-      signup_alert = app
-        .navigate_to_registration
-        .input_email
-        .input_password
-        .input_username
-        .submit_invalid_registration_form
+    signup_alert = app
+      .navigate_to_home_page
+      .navigate_to_registration
+      .input_email
+      .input_password
+      .input_username
+      .submit_invalid_registration_form
 
-      alert = signup_alert.get_invalid_registration_alert
-      expect(alert).to eq('Password confirmation doesn\'t match Password')
-    end
+    alert = signup_alert.get_invalid_registration_alert
+    expect(alert).to eq('Password confirmation doesn\'t match Password')
+  end
 
-    it "should not let user sign up if password confimation does not match" do  
+  it "should not let user sign up if password confimation does not match" do  
 
-      signup_alert = app
-        .navigate_to_registration
-        .input_email
-        .input_password("asdfasdf")
-        .input_pw_confirmation("incorrect")
-        .input_username
-        .submit_invalid_registration_form
+    signup_alert = app
+      .navigate_to_home_page
+      .navigate_to_registration
+      .input_email
+      .input_password("asdfasdf")
+      .input_pw_confirmation("incorrect")
+      .input_username
+      .submit_invalid_registration_form
 
-      alert = signup_alert.get_invalid_registration_alert
-      expect(alert).to eq("Password confirmation doesn\'t match Password")
-    end
-
-    it "should not let user sign up if username is taken" do  
-
-      signup_alert = app
-        .navigate_to_registration
-        .input_email
-        .input_password
-        .input_pw_confirmation
-        .input_username("nbr625")
-        .submit_invalid_registration_form
-        
-      alert = signup_alert.get_invalid_registration_alert
-      expect(alert).to eq('Username has already been taken')
-    end
+    alert = signup_alert.get_invalid_registration_alert
+    expect(alert).to eq("Password confirmation doesn\'t match Password")
+  end
 
   after(:all) do
     app.quit
